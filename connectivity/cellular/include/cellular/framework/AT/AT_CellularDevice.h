@@ -67,7 +67,7 @@ public:
     };
 
 public:
-    AT_CellularDevice(FileHandle *fh);
+    AT_CellularDevice(FileHandle *fh, char* endline="\r");
     virtual ~AT_CellularDevice();
 
     virtual nsapi_error_t clear();
