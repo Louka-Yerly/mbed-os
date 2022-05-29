@@ -28,7 +28,7 @@
 #include "platform/mbed_wait_api.h"
 
 #include <stdio.h>
-#ifdef MBED_SLEEP_TRACING_ENABLED
+#if defined(MBED_SLEEP_TRACING_ENABLED) || defined(MY_DEEP_LOCK_STATS)
 #include <string.h>
 #endif
 
@@ -87,7 +87,7 @@ us_timestamp_t mbed_time_deepsleep(void)
 #endif
 }
 
-#ifdef MBED_SLEEP_TRACING_ENABLED
+#if defined(MBED_SLEEP_TRACING_ENABLED) || defined(MY_DEEP_LOCK_STATS)
 
 // Length of the identifier extracted from the driver name to store for logging.
 #define IDENTIFIER_WIDTH 15
@@ -138,8 +138,11 @@ static sleep_statistic_t *sleep_tracker_add(const char *const filename)
 
     return NULL;
 }
-
+#if defined(MBED_SLEEP_TRACING_ENABLED) || defined(MY_DEEP_LOCK_STATS)
+void sleep_tracker_print_stats(void)
+#else
 static void sleep_tracker_print_stats(void)
+#endif;
 {
     if (sleep_manager_can_deep_sleep()) {
         mbed_error_printf("deepsleep unlocked");
